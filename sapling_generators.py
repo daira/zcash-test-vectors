@@ -3,7 +3,7 @@ from binascii import hexlify
 from pyblake2 import blake2s
 
 from sapling_jubjub import Point, JUBJUB_COFACTOR
-from sapling_utils import chunk
+from sapling_utils import chunk, i2leosp
 
 # First 64 bytes of the BLAKE2s input during group hash.
 # This is chosen to be some random string that we couldn't have
@@ -49,6 +49,8 @@ WINDOWED_PEDERSEN_RANDOMNESS_BASE = find_group_hash(b'Zcash_PH', b'r')
 VALUE_COMMITMENT_VALUE_BASE = find_group_hash(b'Zcash_cv', b'v')
 VALUE_COMMITMENT_RANDOMNESS_BASE = find_group_hash(b'Zcash_cv', b'r')
 
+PEDERSEN_BASES = [find_group_hash(b'Zcash_PH', i2leosp(32, i-1))
+                  for i in range(1, 4+1)]
 
 def main():
     print('''
@@ -59,6 +61,7 @@ def main():
             wprb: [u8; 32],
             vcvb: [u8; 32],
             vcrb: [u8; 32],
+            pedb: [[u8; 32]; 4],
         };
 
         // From https://github.com/zcash-hackworks/zcash-test-vectors/blob/master/sapling_generators.py
@@ -81,6 +84,9 @@ def main():
             vcrb: [
                 %s
             ],
+            pedb: [
+%s
+            ],
         };''' % (
             chunk(hexlify(bytes(SPENDING_KEY_BASE))),
             chunk(hexlify(bytes(PROVING_KEY_BASE))),
@@ -88,6 +94,8 @@ def main():
             chunk(hexlify(bytes(WINDOWED_PEDERSEN_RANDOMNESS_BASE))),
             chunk(hexlify(bytes(VALUE_COMMITMENT_VALUE_BASE))),
             chunk(hexlify(bytes(VALUE_COMMITMENT_RANDOMNESS_BASE))),
+            ''.join(['                [%s],\n' % (chunk(hexlify(bytes(x))),)
+                     for x in PEDERSEN_BASES]),
         ))
 
 
