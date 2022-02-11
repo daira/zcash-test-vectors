@@ -109,6 +109,7 @@ def main():
             'unknown_typecode': unknown_tc,
             'unknown_bytes': unknown_bytes,
             'unified_addr': ua.encode(),
+            'root_seed': seed,
             'account': account,
             'diversifier_index': j,
         })
@@ -139,6 +140,7 @@ def main():
                 'rust_fmt': lambda x: None if x is None else Some(x),
             }),
             ('unified_addr', 'Vec<u8>'),
+            ('root_seed', 'Vec<u8>'),
             ('account', 'u32'),
             ('diversifier_index', 'u32'),
         ),

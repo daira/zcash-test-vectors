@@ -107,6 +107,7 @@ def main():
             'unknown_ivk_typecode': unknown_tc,
             'unknown_ivk_bytes': unknown_bytes,
             'unified_ivk': uivk.encode(),
+            'root_seed': seed,
             'account': account,
         })
 
@@ -132,6 +133,7 @@ def main():
                 'rust_fmt': lambda x: None if x is None else Some(x),
             }),
             ('unified_ivk', 'Vec<u8>'),
+            ('root_seed', 'Vec<u8>'),
             ('account', 'u32'),
         ),
         test_vectors,

@@ -111,6 +111,7 @@ def main():
             'unknown_fvk_typecode': unknown_tc,
             'unknown_fvk_bytes': unknown_bytes,
             'unified_fvk': ufvk.encode(),
+            'root_seed': seed,
             'account': account,
         })
 
@@ -136,6 +137,7 @@ def main():
                 'rust_fmt': lambda x: None if x is None else Some(x),
             }),
             ('unified_fvk', 'Vec<u8>'),
+            ('root_seed', 'Vec<u8>'),
             ('account', 'u32'),
         ),
         test_vectors,
